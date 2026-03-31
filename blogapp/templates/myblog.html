@@ -1,0 +1,42 @@
+{% extends "layout.html" %} 
+{% block "pagecontent" %}
+
+{% if blogs %}
+<div class="blog-container">
+
+    {% for blog in blogs %}
+
+    <div class="blog-card">
+
+        <a href="/blogs/{{blog.id}}">
+            <div class="card-image">
+                <img src="{{blog.blog_image.url}}" alt="">
+            </div>
+
+            <div class="card-content">
+                <span>{{blog.title}}</span>
+                <hr>
+                <p>{{blog.description}}</p>
+                <p><strong>By:</strong> {{ blog.user.first_name }} {{ blog.user.last_name }}</p>
+                <p>Create Date: {{blog.created_at}}</p>
+            </div>
+        </a>
+
+        {% if request.user == blog.user %}
+        <div class="blog-actions">
+            <a href="/edit-blog/{{blog.id}}" class="edit-btn">Edit</a>
+            <a href="/delete-blog/{{blog.id}}" class="delete-btn">Delete</a>
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+<h1>No Blogs Found!!</h1>
+{% endif %}
+
+{% endblock %}

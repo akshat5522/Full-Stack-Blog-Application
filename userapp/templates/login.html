@@ -1,0 +1,16 @@
+{% extends "layout.html" %} 
+
+{% block "pagecontent" %}
+<div class="form-container">
+  <h2>Sign Up</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    <input type="email" name="email" placeholder="Email" required />
+
+    <input type="password" name="password" placeholder="Password" required />
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+{% endblock %}
