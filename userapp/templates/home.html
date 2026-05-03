@@ -1,3 +1,4 @@
+{% load static %}
 {% extends "layout.html" %} 
 {% block "pagecontent" %}
 <div class="search-container">
@@ -11,9 +12,23 @@
     {%for blog in blogs%}
     <a href="/blogs/{{blog.id}}">
         <div class="blog-card">
+            {% comment %} <div class="card-image">
+                    <img src="{{blog.blog_image.url}}" alt="">
+            </div> {% endcomment %}
             <div class="card-image">
-                <img src="{{blog.blog_image.url}}" alt="">
+                {% if blog.title == "C++" %}
+                    <img src="{% static 'images/c_OiF8xkD.png' %}" alt="">
+                {% elif blog.title == "Javascript" %}
+                    <img src="{% static 'images/Java.jpeg' %}" alt="">
+                {% elif blog.title == "Python" %}
+                    <img src="{% static 'images/Python_6FfHfKg.png' %}" alt="">
+                {% elif blog.blog_image %}
+                    <img src="{{ blog.blog_image.url }}" alt="">
+                {% else %}
+                    <img src="{% static 'images/default.jpg' %}" alt="blog image">
+                {% endif %}
             </div>
+
             <div class="card-content">
                 <span>{{blog.title}}</span>
                 <hr>
