@@ -12,7 +12,11 @@
     <a href="/blogs/{{blog.id}}">
         <div class="blog-card">
             <div class="card-image">
-                <img src="{{blog.blog_image.url}}" alt="">
+                {% if blog.blog_image %}
+                    <img src="{{blog.blog_image.url}}" alt="">
+                {% else %}
+                    <p>No image</p>
+                {% endif %}
             </div>
 
             <div class="card-content">
