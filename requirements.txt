@@ -12,6 +12,7 @@ mysqlclient==2.2.8
 packaging==26.2
 pillow==12.2.0
 psycopg2-binary==2.9.12
+python-dotenv==1.2.2
 requests==2.33.1
 six==1.17.0
 sqlparse==0.5.5
