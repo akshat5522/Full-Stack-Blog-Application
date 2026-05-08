@@ -14,28 +14,37 @@ from pathlib import Path
 import dj_database_url
 import os
 from environ import Env, environ
+env = Env()
+Env.read_env()
+ENVIRONMENT = env('ENVIRONMENT', default='production')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-ENVIRONMENT = env('ENVIRONMENT', default='production')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = env('SECRET_KEY', default='temporary-secret-key')
 
-if ENVIRONMENT == 'development':
+
+# SECURITY WARNING: don't run with debug turned on in production!
+if ENVIRONMENT == 'production':
     DEBUG = True
 else:
     DEBUG = False
+
+
 ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://Akshataks.pythonanywhere.com',
+    'https://*.onrender.com'
+] #Helps avoid login/form issues sometimes
 
 
 # Application definition
@@ -47,20 +56,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'cloudinary',
     'cloudinary_storage',
+    'cloudinary',
     "userapp",
     "blogapp"
 ]
 
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
-#     'API_KEY': os.getenv('API_KEY'),
-#     'API_SECRET': os.getenv('API_SECRET'),
-# }
 
-
-CSRF_COOKIE_SECURE = True
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -102,22 +104,6 @@ DATABASES = {
     }
 }
 
-POSTGRES_LOCALLY = False
-if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "blogdb",
-#         "USER":"root",
-#         "PASSWORD":"Akshat5522",
-#         "HOST":"localhost",
-#         "PORT":'3306',
-#     }
-# }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
@@ -152,26 +138,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "/static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = "/static/"
+# # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL= '/media/'
-if ENVIRONMENT == 'development':
-    MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
-else:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': env('CLOUDINARY_API_KEY'),
-        'API_SECRET': env('CLOUDINARY_API_SECRET'),
-        'SECURE': True,
-    }
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+# if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+#     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#     CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+#     'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+#     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+# }
+#     CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
+#     'API_KEY': env('CLOUDINARY_API_KEY'),
+#     'API_SECRET': env('CLOUDINARY_API_SECRET'),
+# }
+# else:
+#     MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://Akshataks.pythonanywhere.com',
-    'https://*.onrender.com'
-] #Helps avoid login/form issues sometimes
