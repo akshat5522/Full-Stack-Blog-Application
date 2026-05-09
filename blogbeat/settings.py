@@ -11,10 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
 import os
-from dotenv import load_dotenv
-from environ import Env, environ
+from environ import Env
 env = Env()
 Env.read_env()
 ENVIRONMENT = env('ENVIRONMENT', default='production')
@@ -57,8 +55,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'cloudinary_storage',
-    'cloudinary',
     "userapp",
     "blogapp"
 ]
@@ -159,12 +155,14 @@ STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL= '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-CLOUDINARY_STORAGE = {
-'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-}
+MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# CLOUDINARY_STORAGE = {
+# 'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+# 'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+# 'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+# }
 
 # if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
 #     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
