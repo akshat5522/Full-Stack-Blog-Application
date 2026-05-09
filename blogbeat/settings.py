@@ -153,6 +153,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL= '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
@@ -163,21 +164,6 @@ MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 # 'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
 # 'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 # }
-
-# if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-#     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-#     CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-#     'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-#     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-# }
-#     CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
-#     'API_KEY': env('CLOUDINARY_API_KEY'),
-#     'API_SECRET': env('CLOUDINARY_API_SECRET'),
-# }
-# else:
-#     MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
